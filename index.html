@@ -1,9 +1,8 @@
-<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <title>Supabase SQL Viewer</title>
-  <!-- Supabase CDN laden -->
+  <!-- Supabase v2 über CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -13,17 +12,18 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
-      // HIER deine Daten eintragen:
+      // 🔁 DEINE DATEN HIER EINTRAGEN
       const supabaseUrl = 'https://rshriwjmpgnrcyjlnnny.supabase.co';
       const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJzaHJpd2ptcGducmN5amxubm55Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgyNDgwNDEsImV4cCI6MjA2MzgyNDA0MX0.Np5PVmsuI7RP1aoGoYRUFmN8Ld-O5xQXUonm4KHv2tY';
+     
 
-      const client = supabase.createClient(supabaseUrl, supabaseKey);
+      const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-      const ausgabe = document.getElementById('ausgabe');
-
-      const { data, error } = await client
+      const { data, error } = await supabase
         .from('beispieltabelle')
         .select('*');
+
+      const ausgabe = document.getElementById('ausgabe');
 
       if (error) {
         ausgabe.textContent = 'Fehler: ' + error.message;
