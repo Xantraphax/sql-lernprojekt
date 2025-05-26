@@ -1,13 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SQL Eingabe</title>
+  <title>Supabase SQL Viewer</title>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+    const supabase = createClient(
+      'https://rshriwjmpgnrcyjlnnny.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJzaHJpd2ptcGducmN5amxubm55Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgyNDgwNDEsImV4cCI6MjA2MzgyNDA0MX0.Np5PVmsuI7RP1aoGoYRUFmN8Ld-O5xQXUonm4KHv2tY'
+    );
+
+    async function ladeDaten() {
+      const { data, error } = await supabase.from('beispieltabelle').select('*');
+      const ausgabe = document.getElementById('ausgabe');
+
+      if (error) {
+        ausgabe.textContent = 'Fehler: ' + error.message;
+      } else {
+        ausgabe.innerHTML = '<ul>' + data.map(e => `<li>${e.name}</li>`).join('') + '</ul>';
+      }
+    }
+
+    window.onload = ladeDaten;
+  </script>
 </head>
 <body>
-  <h1>SQL Eingabeformular</h1>
-  <form action="query.php" method="POST">
-    <textarea name="sql" rows="8" cols="70">SELECT * FROM beispieltabelle;</textarea><br>
-    <button type="submit">Abschicken</button>
-  </form>
+  <h1>Supabase Datenbank anzeigen</h1>
+  <div id="ausgabe">Lade Daten…</div>
 </body>
 </html>
